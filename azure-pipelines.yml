@@ -8,14 +8,16 @@ pool:
 
 stages:
   - stage: Build
-    steps:  
-      - task: Maven@4
-        inputs:
-          mavenPomFile: 'pom.xml'
-          mavenOptions: '-Xmx3072m'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: 'default'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: true
-          testResultsFiles: '**/TEST-*.xml'
-          goals: 'clean package'
+    jobs:  # Add jobs section
+      - job: BuildJob  # Job name
+        steps:  # Correctly indented steps under the job
+          - task: Maven@4
+            inputs:
+              mavenPomFile: 'pom.xml'
+              mavenOptions: '-Xmx3072m'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: 'default'
+              jdkArchitectureOption: 'x64'
+              publishJUnitResults: true
+              testResultsFiles: '**/TEST-*.xml'
+              goals: 'clean package'
