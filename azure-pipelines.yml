@@ -12,6 +12,7 @@ stages:
       - job: BuildJob  # Job name
         steps:  # Correctly indented steps under the job
           - task: Maven@4
+            displayName: 'Build the Package'
             inputs:
               mavenPomFile: 'pom.xml'
               mavenOptions: '-Xmx3072m'
@@ -21,3 +22,11 @@ stages:
               publishJUnitResults: true
               testResultsFiles: '**/TEST-*.xml'
               goals: 'clean package'
+      - job: Publish Artifact
+        steps:    
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish The Artifact'
+            inputs:
+              PathtoPublish: 'webapp/target/webapp.war'  # Path to the specific artifact
+              ArtifactName: 'webapp'              # Name for the published artifact
+              publishLocation: 'Container'
