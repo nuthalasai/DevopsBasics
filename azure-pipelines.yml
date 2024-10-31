@@ -8,13 +8,13 @@ pool:
 
 stages:
   - stage: Build
-    jobs:  # Add jobs section
-      - job: BuildJob  # Job name
-        steps:  # Correctly indented steps under the job
+    jobs:
+      - job: BuildAndPackageJob
+        steps:
           - task: Maven@4
             displayName: 'Build the Package'
             inputs:
-              mavenPomFile: 'pom.xml'
+              mavenPomFile: 'webapp/pom.xml'  # Ensure this points to the correct POM file
               mavenOptions: '-Xmx3072m'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: 'default'
@@ -22,11 +22,14 @@ stages:
               publishJUnitResults: true
               testResultsFiles: '**/TEST-*.xml'
               goals: 'clean package'
-      - job: PublishArtifact
-        steps:    
+
+          - script: |
+              ls -l webapp/target  # List contents of the target directory for verification
+            displayName: 'List contents of target directory'
+
           - task: PublishBuildArtifacts@1
             displayName: 'Publish The Artifact'
             inputs:
-              PathtoPublish: 'webapp/target/webapp.war'  # Path to the specific artifact
-              ArtifactName: 'webapp'              # Name for the published artifact
+              PathtoPublish: 'webapp/target/webapp.war'  # Correct path to the WAR file
+              ArtifactName: 'webapp'
               publishLocation: 'Container'
