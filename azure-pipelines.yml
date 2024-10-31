@@ -22,7 +22,7 @@ stages:
               publishJUnitResults: true
               testResultsFiles: '**/TEST-*.xml'
               goals: 'clean package'
-      - job: Publish Artifact
+      - job: PublishArtifact
         steps:    
           - task: PublishBuildArtifacts@1
             displayName: 'Publish The Artifact'
