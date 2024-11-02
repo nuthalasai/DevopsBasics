@@ -26,10 +26,16 @@ stages:
           - script: |
               ls -l webapp/target  # List contents of the target directory for verification
             displayName: 'List contents of target directory'
+          
+          - task: CopyFiles@2
+            displayName: "Copy Files to Staging Path"
+            inputs:
+              SourceFolder: "webapp/target/webapp.war"
+              TargetFolder: "$(Build.ArtifactStagingDirectory)"
 
           - task: PublishBuildArtifacts@1
             displayName: 'Publish The Artifact'
             inputs:
-              PathtoPublish: 'webapp/target/webapp.war'  # Correct path to the WAR file
+              PathtoPublish: "$(Build.ArtifactStagingDirectory)"  # Correct path to the WAR file
               ArtifactName: 'webapp'
               publishLocation: 'Container'
